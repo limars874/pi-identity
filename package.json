@@ -1,0 +1,32 @@
+{
+  "name": "pi-identity",
+  "version": "0.1.0",
+  "description": "Report the active runtime identity of the current Pi session: provider, model, thinking level, session, cwd, and model scope",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "pi-package",
+    "pi",
+    "pi-extension",
+    "identity",
+    "whoami",
+    "runtime"
+  ],
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": ">=0.84.0"
+  },
+  "dependencies": {
+    "typebox": "^1.1.24"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "0.84.2",
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.3"
+  },
+  "pi": {
+    "extensions": ["./src/extension.ts"]
+  }
+}
