@@ -56,6 +56,14 @@
 | `cwd` | 当前工作目录 |
 | `scopedModels` | 当前会话的模型作用域（`--models` 或 `enabledModels` 决定）；空数组 = 未限制，全部模型可用 |
 
+## 命令
+
+### `/identity`
+
+供用户在 TUI 手动查看身份快照。复用与工具相同的数据收集逻辑，但以主题色卡片渲染在聊天记录中：折叠时显示模型 / thinking 级别 / 运行时 / 会话 / cwd / agent 目录等关键行，展开（Ctrl+O）时附带完整 JSON 细节。
+
+与工具的关键区别：卡片通过 `pi.appendEntry` + `pi.registerEntryRenderer` 实现，**不进入 LLM 上下文**（不会消耗 token，也不会干扰对话）；非 TUI 模式下退化为向 stdout 打印 JSON。
+
 ## 安装
 
 ```bash
@@ -77,4 +85,4 @@ npm run typecheck
 ```
 
 - 扩展入口：`src/extension.ts`（默认导出工厂函数）。
-- 依赖 `typebox` 定义无参数 schema；`@earendil-works/pi-coding-agent` 的类型与 `VERSION` / `getAgentDir` 运行时导出均由 pi 在加载时注入（peerDependency）。
+- 依赖 `typebox` 定义无参数 schema；`@earendil-works/pi-coding-agent` 的类型与 `VERSION` / `getAgentDir` 运行时导出、`@earendil-works/pi-tui` 的 `Box` / `Text` 组件均由 pi 在加载时注入（peerDependency）。
