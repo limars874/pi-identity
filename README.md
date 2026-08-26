@@ -63,7 +63,7 @@
 
 ### `/identity`
 
-供用户在 TUI 手动查看身份快照。复用与工具相同的数据收集逻辑，但以主题色卡片渲染在聊天记录中：折叠时显示模型 / thinking 级别 / 运行时 / 会话 / cwd / agent 目录等关键行，展开（Ctrl+O）时附带完整 JSON 细节。
+供用户在 TUI 手动查看身份快照。复用与工具相同的数据收集逻辑，但以主题色卡片渲染在聊天记录中：折叠时显示模型 / thinking 级别 / profile（含 agent 目录路径）/ 运行时 / 会话 / cwd 等关键行，展开（Ctrl+O）时附带完整 JSON 细节。
 
 与工具的关键区别：卡片通过 `pi.appendEntry` + `pi.registerEntryRenderer` 实现，**不进入 LLM 上下文**（不会消耗 token，也不会干扰对话）；非 TUI 模式下退化为向 stdout 打印 JSON。
 

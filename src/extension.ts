@@ -55,14 +55,14 @@ export default function registerIdentityExtension(pi: ExtensionAPI): void {
 
     const dim = (label: string, value: string) =>
       new Text(`${theme.fg("dim", label.padEnd(8))} ${value}`, 0, 0);
-    // profile 是关键身份信息，非 default 时加粗突出。
+    // profile 是关键身份信息，非 default 时加粗突出；同行带上 agent 目录路径。
     const profile = data.runtime.profile;
-    box.addChild(dim("profile", profile === "default" ? profile : theme.bold(profile)));
+    const profileText = profile === "default" ? profile : theme.bold(profile);
+    box.addChild(dim("profile", `${profileText} · ${data.runtime.agentDir}`));
     box.addChild(dim("runtime", `pi ${data.runtime.piVersion} · ${data.runtime.mode} · ${data.runtime.platform}/${data.runtime.arch}`));
     const sessionLabel = data.session.name ?? data.session.id;
     box.addChild(dim("session", sessionLabel));
     box.addChild(dim("cwd", data.cwd));
-    box.addChild(dim("agent", data.runtime.agentDir));
     if (data.scopedModels.length > 0) {
       box.addChild(dim("scoped", `${data.scopedModels.length} model(s)`));
     }
