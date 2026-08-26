@@ -1,6 +1,8 @@
 import { VERSION, getAgentDir } from "@earendil-works/pi-coding-agent";
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 import { Box, Text } from "@earendil-works/pi-tui";
+import { homedir } from "node:os";
+import { basename, join } from "node:path";
 import { Type } from "typebox";
 
 /**
@@ -53,6 +55,9 @@ export default function registerIdentityExtension(pi: ExtensionAPI): void {
 
     const dim = (label: string, value: string) =>
       new Text(`${theme.fg("dim", label.padEnd(8))} ${value}`, 0, 0);
+    // profile 是关键身份信息，非 default 时加粗突出。
+    const profile = data.runtime.profile;
+    box.addChild(dim("profile", profile === "default" ? profile : theme.bold(profile)));
     box.addChild(dim("runtime", `pi ${data.runtime.piVersion} · ${data.runtime.mode} · ${data.runtime.platform}/${data.runtime.arch}`));
     const sessionLabel = data.session.name ?? data.session.id;
     box.addChild(dim("session", sessionLabel));
@@ -87,10 +92,17 @@ export default function registerIdentityExtension(pi: ExtensionAPI): void {
 /** collectIdentity 返回值的类型，供 entry renderer 复用。 */
 type IdentitySnapshot = ReturnType<typeof collectIdentity>;
 
+/** 从 agent 目录推导 profile 名：默认目录为 default，否则取目录名（如 ~/.pi/profiles/piex → piex）。 */
+function resolveProfile(agentDir: string): string {
+  const defaultDir = join(homedir(), ".pi", "agent");
+  return agentDir === defaultDir ? "default" : basename(agentDir);
+}
+
 /** 收集当前会话的运行时身份快照。 */
 function collectIdentity(ctx: ExtensionContext) {
   const model = ctx.model;
   const sm = ctx.sessionManager;
+  const agentDir = getAgentDir();
 
   return {
     activeModel: model
@@ -112,7 +124,8 @@ function collectIdentity(ctx: ExtensionContext) {
       mode: ctx.mode,
       platform: process.platform,
       arch: process.arch,
-      agentDir: getAgentDir(),
+      agentDir,
+      profile: resolveProfile(agentDir),
     },
     session: {
       id: sm.getSessionId(),

@@ -31,7 +31,8 @@
     "mode": "tui",
     "platform": "darwin",
     "arch": "arm64",
-    "agentDir": "/Users/yi/.pi/agent"
+    "agentDir": "/Users/yi/.pi/agent",
+    "profile": "default"
   },
   "session": {
     "id": "...",
@@ -51,10 +52,12 @@
 |------|------|
 | `activeModel` | 当前激活模型（元信息，不含凭据，含 `input` 支持的输入类型）；未加载模型时为 `null` |
 | `thinkingLevel` | 当前有效思考级别；未提供时为 `null` |
-| `runtime` | pi 版本 / 运行模式（tui/rpc/json/print）/ 平台 / 架构 / agent（profile）目录 |
+| `runtime` | pi 版本 / 运行模式（tui/rpc/json/print）/ 平台 / 架构 / agent 目录 / profile 名 |
 | `session` | 会话 id / 会话文件路径 / 会话目录 / 显示名 / 当前 leaf 条目 |
 | `cwd` | 当前工作目录 |
 | `scopedModels` | 当前会话的模型作用域（`--models` 或 `enabledModels` 决定）；空数组 = 未限制，全部模型可用 |
+
+`profile` 从 agent 目录推导：`~/.pi/agent` 为 `default`，`~/.pi/profiles/<name>` 等自定义 `PI_CODING_AGENT_DIR` 取目录名（如 `piex`）。
 
 ## 命令
 
